@@ -11,7 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @RequiredArgsConstructor
-public class ListBotCommand implements BotCommand {
+public class ListBotCmd implements BotCmd {
     private final Logger logger = LogManager.getLogger();
 
     private final UserRepository userRepo;
@@ -22,11 +22,21 @@ public class ListBotCommand implements BotCommand {
     }
 
     @Override
+    public String description() {
+        return "получить список отслеживаемых ссылок";
+    }
+
+    @Override
     public SendMessage process(Update upd) {
         long id = BotHelper.getChatByUpd(upd);
 
         if (!userRepo.registered(id)) {
             return new SendMessage(id, "Данная команда требует регистрации!");
+        }
+
+        String isBad = checkArgs(upd.message().text().split(" "));
+        if (isBad != null) {
+            return new SendMessage(id, isBad);
         }
 
         logger.info(id + " issued /list");
@@ -35,6 +45,13 @@ public class ListBotCommand implements BotCommand {
         String trackedList = fmtTracked(tracked);
 
         return new SendMessage(id, trackedList);
+    }
+
+    private String checkArgs(String[] args) {
+        if (args.length != 1) {
+            return "Данная команда не принимает никаких аргументов.";
+        }
+        return null;
     }
 
     public static String fmtTracked(Set<String> tracked) {

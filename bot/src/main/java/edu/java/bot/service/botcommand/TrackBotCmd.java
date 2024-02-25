@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @RequiredArgsConstructor
-public class TrackBotCommand implements BotCommand {
+public class TrackBotCmd implements BotCmd {
     private final Logger logger = LogManager.getLogger();
 
     private final HostResourceChecker checker;
@@ -24,7 +24,11 @@ public class TrackBotCommand implements BotCommand {
         return "track";
     }
 
-    @SuppressWarnings("ReturnCount")
+    @Override
+    public String description() {
+        return "начать отслеживать ссылку";
+    }
+
     @Override
     public SendMessage process(Update upd) {
         long id = BotHelper.getChatByUpd(upd);
@@ -34,18 +38,15 @@ public class TrackBotCommand implements BotCommand {
         }
 
         String[] args = upd.message().text().split(" ");
-        if (args.length != 2) {
-            return new SendMessage(id, "Команда требует указания единственного аргумента: ссылка на веб-страницу");
-        }
-        String link = args[1];
-
-        String isBad = verifyLink(link);
+        String isBad = checkArgs(args);
         if (isBad != null) {
             return new SendMessage(id, isBad);
         }
+        String link = args[1];
 
-        if (userRepo.tracks(id, link)) {
-            return new SendMessage(id, "Вы уже отслеживаете эту ссылку.");
+        isBad = checkLink(id, link);
+        if (isBad != null) {
+            return new SendMessage(id, isBad);
         }
 
         userRepo.addTrack(id, link);
@@ -54,14 +55,23 @@ public class TrackBotCommand implements BotCommand {
         return new SendMessage(id, "Вы начали следить за " + link + ".");
     }
 
-    private String verifyLink(String link) {
-        URL url = URLHelper.tryURL(link);
-        if (url == null) {
-            return "Ссылка на сайт указана неверно!";
-        }
-        if (!checker.isLinkSupported(url)) {
-            return "Данный ресурс не поддерживается!";
+    private String checkArgs(String[] args) {
+        if (args.length != 2) {
+            return "Команда требует указания единственного аргумента: ссылка на веб-страницу";
         }
         return null;
+    }
+
+    private String checkLink(long id, String link) {
+        URL url = URLHelper.tryURL(link);
+        String msg = null;
+        if (url == null) {
+            msg = "Ссылка на сайт указана неверно!";
+        } else if (!checker.isLinkSupported(url)) {
+            msg = "Данный ресурс не поддерживается!";
+        } else if (userRepo.tracks(id, link)) {
+            msg = "Вы уже отслеживаете эту ссылку.";
+        }
+        return msg;
     }
 }

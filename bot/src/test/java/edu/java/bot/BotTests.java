@@ -1,7 +1,7 @@
 package edu.java.bot;
 
 import edu.java.bot.repository.UserRepository;
-import edu.java.bot.service.botcommand.ListBotCommand;
+import edu.java.bot.service.botcommand.ListBotCmd;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.Set;
@@ -15,7 +15,7 @@ public class BotTests {
 
         Set<String> tracked = userRepo.linksByUser(42);
 
-        String actualFmt = ListBotCommand.fmtTracked(tracked);
+        String actualFmt = ListBotCmd.fmtTracked(tracked);
         Assertions.assertEquals("Список подписок: \n" +
             " - https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c", actualFmt);
     }
@@ -27,7 +27,7 @@ public class BotTests {
 
         Set<String> tracked = userRepo.linksByUser(36);
 
-        String actualFmt = ListBotCommand.fmtTracked(tracked);
+        String actualFmt = ListBotCmd.fmtTracked(tracked);
         Assertions.assertEquals("Список подписок: пусто", actualFmt);
     }
 }

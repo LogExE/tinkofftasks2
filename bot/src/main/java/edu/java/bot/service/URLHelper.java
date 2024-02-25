@@ -10,11 +10,12 @@ public class URLHelper {
 
     }
 
-    @SuppressWarnings("MagicNumber")
+    static final String WWW_PART = "www.";
+
     public static String getNormalizedHost(URL url) {
         String res = url.getHost();
-        if (res.startsWith("www.")) {
-            res = res.substring(4);
+        if (res.startsWith(WWW_PART)) {
+            res = res.substring(WWW_PART.length());
         }
         return res;
     }

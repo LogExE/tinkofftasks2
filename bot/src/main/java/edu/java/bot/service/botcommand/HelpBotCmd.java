@@ -6,7 +6,7 @@ import edu.java.bot.service.BotHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class HelpBotCommand implements BotCommand {
+public class HelpBotCmd implements BotCmd {
     private final Logger logger = LogManager.getLogger();
 
     @Override
@@ -15,10 +15,20 @@ public class HelpBotCommand implements BotCommand {
     }
 
     @Override
+    public String description() {
+        return "получить справочную информацию о боте";
+    }
+
+    @Override
     public SendMessage process(Update upd) {
         long id = BotHelper.getChatByUpd(upd);
 
-        logger.info(id + "issued /help");
+        String isBad = checkArgs(upd.message().text().split(" "));
+        if (isBad != null) {
+            return new SendMessage(id, isBad);
+        }
+
+        logger.info(id + " issued /help");
         return new SendMessage(id, """
             Для начала работы с ботом зарегистрируйтесь: /start
 
@@ -26,5 +36,12 @@ public class HelpBotCommand implements BotCommand {
             В будущем от них можно отписаться командой /untrack
             Список подписок можно посмотреть так: /list
             """);
+    }
+
+    private String checkArgs(String[] args) {
+        if (args.length != 1) {
+            return "Данная команда не принимает никаких аргументов.";
+        }
+        return null;
     }
 }

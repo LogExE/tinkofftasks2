@@ -2,8 +2,10 @@ package edu.java.bot.service;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
+import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.request.SetMyCommands;
 import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.service.botcommand.BotCommandHandler;
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +20,7 @@ public class ScraperTGBot {
     public ScraperTGBot(ApplicationConfig applicationConfig, BotCommandHandler comHandler) {
         bot = new TelegramBot(applicationConfig.telegramToken());
 
+        bot.execute(new SetMyCommands(comHandler.commands().toArray(new BotCommand[0])));
         bot.setUpdatesListener(updates -> {
             for (var upd : updates) {
                 if (upd.message() == null) {

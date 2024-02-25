@@ -9,7 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @RequiredArgsConstructor
-public class RegisterBotCommand implements BotCommand {
+public class RegisterBotCmd implements BotCmd {
     private final Logger logger = LogManager.getLogger();
 
     private final UserRepository userRepo;
@@ -17,6 +17,11 @@ public class RegisterBotCommand implements BotCommand {
     @Override
     public String name() {
         return "start";
+    }
+
+    @Override
+    public String description() {
+        return "начать работу с ботом";
     }
 
     @Override
