@@ -19,6 +19,12 @@ public class StackOverflowClient extends AbstractClient {
     }
 
     public StackOverflowResponse lastUpdated(long id) {
-        return null;
+        String uri = "/questions/" + id;
+        return webClient
+            .get()
+            .uri(uri)
+            .retrieve()
+            .bodyToMono(StackOverflowResponse.class)
+            .block();
     }
 }

@@ -1,4 +1,4 @@
-package edu.java.scrapper;
+package edu.java.scrapper.apimocks;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import edu.java.clients.GitHubClient;
@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.List;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
