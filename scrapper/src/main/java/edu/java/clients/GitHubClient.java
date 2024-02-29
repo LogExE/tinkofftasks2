@@ -1,37 +1,30 @@
 package edu.java.clients;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import edu.java.clients.responses.GitHubResponse;
 import org.springframework.web.reactive.function.client.WebClient;
-import java.util.List;
 
-public class GitHubClient {
-    private final WebClient webClient;
-    private final String API_URL = "https://api.github.com/";
-
-    private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-
+public class GitHubClient extends AbstractClient {
     public GitHubClient(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl(API_URL).build();
+        super(webClientBuilder);
     }
 
     public GitHubClient(WebClient.Builder webClientBuilder, String baseURL) {
-        this.webClient = webClientBuilder.baseUrl(baseURL).build();
+        super(webClientBuilder, baseURL);
     }
 
-    public List<GitHubEvent> getEventsSince(String repo, String owner) {
-        String uri = "/repos/" + repo + "/" + owner + "/events";
-        // TODO: .header("if-modified-since", "")
-        return jsonStringToEvents(webClient.get().uri(uri).retrieve().bodyToMono(String.class).block());
+    @Override
+    protected String defaultApiUrl() {
+        return "https://api.github.com/";
     }
 
-    private List<GitHubEvent> jsonStringToEvents(String jsonString) {
-        try {
-            return objectMapper.readValue(jsonString, new TypeReference<>() {});
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    public GitHubResponse lastUpdated(String owner, String repo) {
+        String uri = "/repos/" + owner + "/" + repo;
+        return webClient
+            .get()
+            .uri(uri)
+            .header("accept", "application/vnd.github+json")
+            .retrieve()
+            .bodyToMono(GitHubResponse.class)
+            .block();
     }
 }
