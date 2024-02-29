@@ -2,7 +2,6 @@ package edu.java.clients;
 
 import edu.java.clients.responses.StackOverflowResponse;
 import org.springframework.web.reactive.function.client.WebClient;
-import java.util.List;
 
 public class StackOverflowClient extends AbstractClient {
     public StackOverflowClient(WebClient.Builder webClientBuilder) {
