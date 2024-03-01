@@ -21,7 +21,7 @@ public class TrackBotCmd implements BotCmd {
 
     @Override
     public String name() {
-        return "track";
+        return "/track";
     }
 
     @Override

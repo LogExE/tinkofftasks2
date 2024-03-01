@@ -31,7 +31,7 @@ public class BotCommandHandler {
     public SendMessage handle(Update upd) {
         long id = BotHelper.getChatByUpd(upd);
         String[] msg = upd.message().text().split(" ");
-        BotCmd cmd = nameToCmd.get(msg[0].substring(1));
+        BotCmd cmd = nameToCmd.get(msg[0]);
         if (cmd == null) {
             return new SendMessage(id, "Неизвестная команда.");
         }

@@ -16,7 +16,7 @@ public class RegisterBotCmd implements BotCmd {
 
     @Override
     public String name() {
-        return "start";
+        return "/start";
     }
 
     @Override
