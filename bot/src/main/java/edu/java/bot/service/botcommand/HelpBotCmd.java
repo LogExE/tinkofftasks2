@@ -11,7 +11,7 @@ public class HelpBotCmd implements BotCmd {
 
     @Override
     public String name() {
-        return "help";
+        return "/help";
     }
 
     @Override

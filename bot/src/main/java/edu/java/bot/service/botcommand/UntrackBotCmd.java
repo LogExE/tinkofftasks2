@@ -21,7 +21,7 @@ public class UntrackBotCmd implements BotCmd {
 
     @Override
     public String name() {
-        return "untrack";
+        return "/untrack";
     }
 
     @Override

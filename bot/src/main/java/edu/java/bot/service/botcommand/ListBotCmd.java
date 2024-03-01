@@ -18,7 +18,7 @@ public class ListBotCmd implements BotCmd {
 
     @Override
     public String name() {
-        return "list";
+        return "/list";
     }
 
     @Override

@@ -3,7 +3,6 @@ package edu.java.bot.service;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.BotCommand;
-import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import edu.java.bot.configuration.ApplicationConfig;
@@ -23,16 +22,10 @@ public class ScraperTGBot {
         bot.execute(new SetMyCommands(comHandler.commands().toArray(new BotCommand[0])));
         bot.setUpdatesListener(updates -> {
             for (var upd : updates) {
-                if (upd.message() == null) {
+                if (upd == null || upd.message() == null || upd.message().text() == null) {
                     continue;
                 }
-                String txt = upd.message().text();
-                SendMessage res;
-                if (txt.startsWith("/")) {
-                    res = comHandler.handle(upd);
-                } else {
-                    res = complainUser(upd);
-                }
+                SendMessage res = comHandler.handle(upd);
                 bot.execute(res);
             }
             return UpdatesListener.CONFIRMED_UPDATES_ALL;
@@ -44,13 +37,5 @@ public class ScraperTGBot {
                 logger.error(e.getMessage());
             }
         });
-    }
-
-    private SendMessage complainUser(Update upd) {
-        long id = BotHelper.getChatByUpd(upd);
-        return new SendMessage(
-            id,
-            "Пожалуйста, введите команду. Для просмотра доступных комманд отправьте \"/help\" без кавычек."
-        );
     }
 }
