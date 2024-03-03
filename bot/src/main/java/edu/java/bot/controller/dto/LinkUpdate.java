@@ -1,10 +1,11 @@
 package edu.java.bot.controller.dto;
 
+import java.net.URI;
 import java.util.List;
 
 public record LinkUpdate(
     long id,
-    String url,
+    URI url,
     String description,
     List<Long> tgChatIds
 ) {
