@@ -4,17 +4,9 @@ import edu.java.clients.responses.GitHubResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class GitHubClient extends AbstractClient {
-    public GitHubClient(WebClient.Builder webClientBuilder) {
-        super(webClientBuilder);
-    }
 
     public GitHubClient(WebClient.Builder webClientBuilder, String baseURL) {
         super(webClientBuilder, baseURL);
-    }
-
-    @Override
-    protected String defaultApiUrl() {
-        return "https://api.github.com/";
     }
 
     public GitHubResponse lastUpdated(String owner, String repo) {
