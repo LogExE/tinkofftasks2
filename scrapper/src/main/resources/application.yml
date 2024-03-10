@@ -3,6 +3,9 @@ app:
     enable: true
     interval: 10s
     force-check-delay: 10s
+  api-urls:
+    stackoverflow: ${STACKOVERFLOW_BASE_URL:https://api.stackexchange.com/2.3/}
+    github: ${GITHUB_BASE_URL:https://api.github.com/}
 
 spring:
   application:
