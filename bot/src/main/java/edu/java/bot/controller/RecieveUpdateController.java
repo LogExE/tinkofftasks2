@@ -1,6 +1,6 @@
 package edu.java.bot.controller;
 
-import edu.java.bot.controller.dto.LinkUpdate;
+import edu.java.controller.dto.LinkUpdate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
