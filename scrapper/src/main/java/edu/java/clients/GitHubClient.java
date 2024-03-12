@@ -3,10 +3,12 @@ package edu.java.clients;
 import edu.java.clients.responses.GitHubResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 
-public class GitHubClient extends AbstractClient {
+public class GitHubClient {
+
+    private final WebClient webClient;
 
     public GitHubClient(WebClient.Builder webClientBuilder, String baseURL) {
-        super(webClientBuilder, baseURL);
+        webClient = webClientBuilder.baseUrl(baseURL).build();
     }
 
     public GitHubResponse lastUpdated(String owner, String repo) {
